@@ -92,9 +92,9 @@ def clear_all():
     global textarea
     textarea.delete(0.0, END)
 
-ttk.Button(ctrl, text="+", command=increase).grid(column=0, row=3, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="+", command=increase).grid(column=2, row=3, padx=(5, 5), pady=(5, 5))
 ttk.Button(ctrl, text="Copy Char", command=copy).grid(column=1, row=3, padx=(5, 5), pady=(5, 5))
-ttk.Button(ctrl, text="-", command=decrease).grid(column=2, row=3, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="-", command=decrease).grid(column=0, row=3, padx=(5, 5), pady=(5, 5))
 
 ttk.Button(ctrl, text="<<", command=shift_left).grid(column=0, row=4, padx=(5, 5), pady=(5, 5))
 ttk.Button(ctrl, text="Write", command=write).grid(column=1, row=4, padx=(5, 5), pady=(5, 5))
