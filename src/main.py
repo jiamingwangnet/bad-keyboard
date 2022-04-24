@@ -1,11 +1,10 @@
 from tkinter import *
-from tkinter import ttk
-from pyautogui import press, typewrite
+from tkinter import ttk, Text
 from pyperclip import copy as cpy
 
 root = Tk()
 root.title("Bad keyboard")
-root.geometry("350x250")
+root.geometry("310x400")
 root.resizable(False, False)
 
 main = ttk.Frame(root, padding=5, width=350, height=250)
@@ -13,9 +12,13 @@ main.grid(column=0, row=1)
 
 ctrl = ttk.Frame(main, padding=20, relief="solid", width=250, height=50)
 ctrl.place(relx=0.5, rely=0.36, anchor="center")
+ctrl.grid(column=0, row=1)
 
 dis = ttk.Frame(root, padding=0)
 dis.grid(column=0, row=0)
+
+out = ttk.Frame(root, padding=10, relief="solid", width=250, height=50)
+out.grid(column=0, row=2)
 
 output = 0x0000
 
@@ -71,20 +74,27 @@ def num_pad():
     update()
 
 def bkspace():
-    press("backspace")
+    global textarea
+    textarea.delete(END, END)
 
-def enter():
-    press("enter")
+def copy_all():
+    global textarea
+    cpy(textarea.get(0.0, END))
 
 def write():
-    typewrite(chr(output))
+    global textarea
+    textarea.insert(INSERT, chr(output))
 
 def copy():
     cpy(chr(output))
 
-ttk.Button(ctrl, text="Increase", command=increase).grid(column=0, row=3, padx=(5, 5), pady=(5, 5))
-ttk.Button(ctrl, text="Copy", command=copy).grid(column=1, row=3, padx=(5, 5), pady=(5, 5))
-ttk.Button(ctrl, text="Decrease", command=decrease).grid(column=2, row=3, padx=(5, 5), pady=(5, 5))
+def clear_all():
+    global textarea
+    textarea.delete(0.0, END)
+
+ttk.Button(ctrl, text="+", command=increase).grid(column=0, row=3, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="Copy Char", command=copy).grid(column=1, row=3, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="-", command=decrease).grid(column=2, row=3, padx=(5, 5), pady=(5, 5))
 
 ttk.Button(ctrl, text="<<", command=shift_left).grid(column=0, row=4, padx=(5, 5), pady=(5, 5))
 ttk.Button(ctrl, text="Write", command=write).grid(column=1, row=4, padx=(5, 5), pady=(5, 5))
@@ -92,10 +102,15 @@ ttk.Button(ctrl, text=">>", command=shift_right).grid(column=2, row=4, padx=(5, 
 
 ttk.Button(ctrl, text="Latin Lower", command=lat_down).grid(column=0, row=5, padx=(5, 5), pady=(5, 5))
 ttk.Button(ctrl, text="Latin Upper", command=lat_up).grid(column=1, row=5, padx=(5, 5), pady=(5, 5))
-ttk.Button(ctrl, text="Number Pad", command=num_pad).grid(column=2, row=5, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="Numbers", command=num_pad).grid(column=2, row=5, padx=(5, 5), pady=(5, 5))
 
 ttk.Button(ctrl, text="Backspace", command=bkspace).grid(column=0, row=6, padx=(5, 5), pady=(5, 5))
-ttk.Button(ctrl, text="Enter", command=enter).grid(column=1, row=6, padx=(5, 5), pady=(5, 5))
-ttk.Button(ctrl, text="Clear", command=clear).grid(column=2, row=6, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="Copy All", command=copy_all).grid(column=1, row=6, padx=(5, 5), pady=(5, 5))
+ttk.Button(ctrl, text="Set to 0x00", command=clear).grid(column=2, row=6, padx=(5, 5), pady=(5, 5))
+
+ttk.Button(ctrl, text="Clear", command=clear_all).grid(column=1, row=7, padx=(5, 5), pady=(5, 5))
+
+textarea = Text(out, width=30, height=5)
+textarea.grid(column=0, row=7, padx=(5, 5), pady=(5, 5))
 
 root.mainloop()
